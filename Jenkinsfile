@@ -1,24 +1,23 @@
 pipeline {
-    agent {
-        docker {
-            image 'maven:3.9.9-eclipse-temurin-21'
-            args '-v $HOME/.m2:/root/.m2'
-        }
-    }
-
+    agent any
+    
     stages {
-        stage('Build') {
+        stage('Cloning the repository') {
             steps {
-                sh 'mvn clean package -DskipTests'
-                echo "success"
+                git credentialsId: 'github-token', url: 'https://github.com/ariefshaik114/todo.git'
+            }
+        }
+        stage('Build and run application using Docker Compose'){
+            steps {
+                sh 'docker compose up -d'
             }
         }
         
-        stage('Archive') {
-            steps {
-                archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
-            }
+    }
+    post {
+        always {
+            echo "Cleaning up containers..."
+            sh 'docker-compose down'
         }
     }
-    
 }
