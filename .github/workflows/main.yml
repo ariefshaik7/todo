@@ -25,5 +25,3 @@ jobs:
     - name: Cleaning up containers
       run: docker compose down
       
-    - name: Shutdown Docker Compose
-      run: docker compose down
