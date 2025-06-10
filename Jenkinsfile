@@ -17,7 +17,7 @@ pipeline {
     post {
         always {
             echo "Cleaning up containers..."
-            sh 'docker compose down -d'
+            sh 'docker-compose down'
         }
     }
 }
