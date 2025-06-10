@@ -6,36 +6,38 @@ A simple and clean Todo List application built with **Java Spring Boot**, **MySQ
 
 ## 🚀 Features
 
-- Add new tasks
-- View all tasks
-- Mark tasks as completed
-- Delete tasks
-- Persistent storage using MySQL
-- Simple and responsive UI with Thymeleaf & Bootstrap
+- Add new tasks  
+- View all tasks  
+- Mark tasks as completed  
+- Delete tasks  
+- Persistent storage using MySQL  
+- Simple and responsive UI with Thymeleaf & Bootstrap  
 
 ---
 
 ## ⚙️ Technologies Used
 
-- Java 17+
-- Spring Boot
-- Spring MVC
-- Spring Data JPA
-- MySQL
-- Thymeleaf
-- Lombok
-- Bootstrap 5
-- Docker + Docker Compose
+- Java 17+  
+- Spring Boot  
+- Spring MVC  
+- Spring Data JPA  
+- MySQL  
+- Thymeleaf  
+- Lombok  
+- Bootstrap 5  
+- Docker + Docker Compose  
+- Jenkins (CI/CD)
 
 ---
 
 ## 🧰 Requirements
 
-- Java 17 or higher
-- Maven
-- MySQL Server (if not using Docker)
-- Docker & Docker Compose (for containerized setup)
-- An IDE (like IntelliJ IDEA, Eclipse, or VS Code)
+- Java 17 or higher  
+- Maven  
+- MySQL Server (if not using Docker)  
+- Docker & Docker Compose  
+- An IDE (like IntelliJ IDEA, Eclipse, or VS Code)  
+- Jenkins (for automation and CI/CD)
 
 ---
 
@@ -66,7 +68,7 @@ This project is Dockerized for easier setup and deployment.
 
 ### 📁 Files Included
 
-- `Dockerfile` — Defines the Spring Boot app container.
+- `Dockerfile` — Defines the Spring Boot app container.  
 - `docker-compose.yml` — Sets up the Spring Boot app and MySQL database as services.
 
 ### ▶️ Steps to Run
@@ -88,11 +90,51 @@ This project is Dockerized for easier setup and deployment.
 
 ### 🗃️ MySQL Configuration (Docker)
 
-- **Service Name**: `mysql`
-- **Username**: `root`
-- **Password**: `password`
-- **Database**: `todo-app`
+- **Service Name**: `mysql`  
+- **Username**: `root`  
+- **Password**: `password`  
+- **Database**: `todo-app`  
 - The database is automatically created via environment variables in the `docker-compose.yml`.
+
+---
+
+## ⚙️ Jenkins Integration (CI/CD)
+
+The project includes a `Jenkinsfile` to automate build and deployment using Docker Compose.
+
+### 📜 Jenkinsfile Overview
+
+\`\`\`groovy
+pipeline {
+    agent any
+
+    stages {
+        stage('Cloning the repository') {
+            steps {
+                git credentialsId: 'github-token', url: 'https://github.com/ariefshaik114/todo.git'
+            }
+        }
+        stage('Build and run application using Docker Compose') {
+            steps {
+                sh 'docker compose up -d'
+            }
+        }
+    }
+
+    post {
+        always {
+            echo "Cleaning up containers..."
+            sh 'docker-compose down'
+        }
+    }
+}
+\`\`\`
+
+### 🛠 How It Works
+
+- Jenkins pulls the source code from GitHub using a secure token.
+- The app is built and deployed in containers using Docker Compose.
+- After execution, it tears down containers to ensure a clean state.
 
 ---
 
@@ -104,6 +146,7 @@ todo-app/
 ├── src/                      # Source files
 ├── Dockerfile                # Docker image instructions
 ├── docker-compose.yml        # Docker Compose services
+├── Jenkinsfile               # Jenkins CI/CD pipeline
 ├── pom.xml                   # Maven dependencies
 └── README.md
 ```
