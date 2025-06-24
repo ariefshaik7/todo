@@ -12,18 +12,12 @@ services:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 5s
-      timeout: 10s
-      retries: 10
 
   todoapp:
     build: .
     container_name: todoapp
     depends_on:
-      mysql:
-        condition: service_healthy
+      - mysql
     ports:
       - "8080:8080"
     environment:
