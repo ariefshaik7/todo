@@ -195,4 +195,3 @@ This project can be deployed to both **Azure** and **AWS**, with secure network 
   ```
   http://<your-cloud-instance-ip>:8080
   ```
-
